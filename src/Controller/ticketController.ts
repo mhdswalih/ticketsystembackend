@@ -5,29 +5,24 @@ import ticketModel from '../Model/ticketModel';
 
 export const addTicket = async (req: Request, res: Response) => {
   try {
-    const { name, email, phone, payment, seatId } = req.body;
-    console.log(req.body,'---------------------');
-    
     console.log('Received booking request:', req.body);
-     
+    const { name, email, phone, payment, seat, seatId } = req.body;
+    // Accept seatId directly for flexibility
+    const resolvedSeatId = seatId !== undefined ? seatId : (seat && seat.id);
     // validation
-    if (!name || !email || !phone || !payment) {
-      return res.status(400).json({ message: 'All fields are required' });
+    if (!name || !email || !phone || !payment || resolvedSeatId === undefined) {
+      console.log('Validation failed:', { name, email, phone, payment, seat, seatId });
+      return res.status(400).json({ message: 'All fields are required and seatId must be provided' });
     }
-    // if (typeof seat !== 'object' || seat.id === undefined || seat.id === null) {
-    //   return res.status(400).json({ message: 'Seat information is required and must have an id' });
-    // }
-     
-    // seat is an object → mark booked as true
     const newUser = await ticketModel.create({
       name,
       email,
       phone,
       payment,
       seatBooked: true,
-      seatId: seatId
+      seatId: resolvedSeatId
     });
-
+    console.log('Booking created:', newUser);
     return res.status(201).json({
       message: 'Ticket booked successfully',
       data: newUser
