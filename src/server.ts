@@ -20,7 +20,7 @@ const connectDB = async (): Promise<void> => {
 connectDB()
 
 app.use(cors({
-    origin: ['https://ticketsystemfrontend.vercel.app', 'http://localhost:5173'],
+    origin:'https://ticketsystemfrontend.vercel.app',
    
     credentials: true
 }))
