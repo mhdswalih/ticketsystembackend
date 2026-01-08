@@ -6,6 +6,8 @@ import ticketModel from '../Model/ticketModel';
 export const addTicket = async (req: Request, res: Response) => {
   try {
     const { name, email, phone, payment, seatId } = req.body;
+    console.log(req.body,'---------------------');
+    
     console.log('Received booking request:', req.body);
      
     // validation
